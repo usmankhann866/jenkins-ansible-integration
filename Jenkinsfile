@@ -14,7 +14,7 @@ pipeline {
 
     stage('Test') {
       steps {
-        ansiblePlaybook(playbook: 'ansible/playbooks/setup.yml', inventory: 'ansible/inventory/hosts', limit: 'localhost')
+        ansiblePlaybook(playbook: 'ansible/playbooks/setup.yml', inventory: 'ansible/inventory/hosts')
 
 
 }
