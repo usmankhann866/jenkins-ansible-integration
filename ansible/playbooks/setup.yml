@@ -1,0 +1,23 @@
+---
+- hosts: webservers
+  become: yes
+  tasks:
+    - name: Download NVM installation script
+      get_url:
+        url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh
+        dest: /tmp/install_nvm.sh
+        mode: '0755'  # Make the script executable
+      register: nvm_download_result
+      ignore_errors: yes  # Ignore errors in this task
+
+    - name: Run NVM installation script
+      command: "/bin/bash /tmp/install_nvm.sh"
+      when: nvm_download_result.status_code == 0
+
+    - name: Source NVM in the current shell
+      command: source ~/.nvm/nvm.sh
+      when: nvm_download_result.status_code == 0
+
+    - name: Install Node.js version 14.16.8
+      command: nvm install 14.16.8
+      when: nvm_download_result.status_code == 0
