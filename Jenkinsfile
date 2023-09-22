@@ -14,7 +14,7 @@ pipeline {
 
     stage('Test') {
       steps {
-        ansiblePlaybook(playbook: 'ansible/java-app-setup.yml', inventory: 'ansible/hosts', limit: 'localhost', vaultCredentialsId: "java-app-vault")
+        ansiblePlaybook(playbook: 'ansible/setup.yml', inventory: 'ansible/hosts', limit: 'localhost')
 
 
 }
@@ -22,3 +22,4 @@ pipeline {
 
   }
 
+}
