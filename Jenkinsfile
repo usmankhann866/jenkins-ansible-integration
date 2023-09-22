@@ -14,8 +14,8 @@ pipeline {
 
     stage('Test') {
       steps {
-        ansiblePlaybook(playbook: 'ansible/playbooks/setup.yml', inventory: 'ansible/inventory/hosts')
-
+       # ansiblePlaybook(playbook: 'ansible/playbooks/setup.yml', inventory: 'ansible/inventory/hosts')
+       ansiblePlaybook credentialsId: '5f591e89-ae17-4790-a0b7-f3db2d4d407f', disableHostKeyChecking: true, installation: 'Ansible', inventory: '/ansible/playbooks/setup.yml', playbook: '/ansible/playbooks/setup.yml'
 
 }
     }
