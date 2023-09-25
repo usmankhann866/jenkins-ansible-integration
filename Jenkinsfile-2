@@ -1,23 +1,15 @@
+
 pipeline {
-  agent {
-    node {
-      label 'linux'
-    }
+    agent any
 
-  }
-  stages {
-    stage('Build') {
-      steps {
-	echo "Hello world"
-      }
-    }
-
-    stage('Test') {
-      steps {
-       
-       def playbooks = [
-                        'ansible/playbooks/node_install.yml',
-                        'ansible/playbooks/django_install.yml'
+    stages {
+        stage('Run Playbooks') {
+            steps {
+                script {
+                    def playbooks = [
+                        'ansible/playbooks/setup1.yml',
+                        'ansible/playbooks/setup2.yml',
+                        'ansible/playbooks/setup3.yml'
                         // Add more playbook paths as needed
                     ]
 
@@ -30,12 +22,8 @@ pipeline {
                             playbook: playbook
                         )
                     }
-
+                }
+            }
+        }
+    }
 }
-}
- }
-
-  }
-
-}
-
