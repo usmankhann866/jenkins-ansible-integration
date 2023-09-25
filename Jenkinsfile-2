@@ -8,8 +8,7 @@ pipeline {
                 script {
                     def playbooks = [
                         'ansible/playbooks/nodejs_install.yml',
-                        'ansible/playbooks/django_install.yml',
-                        'ansible/playbooks/setup3.yml'
+                        'ansible/playbooks/django_install.yml'
                         // Add more playbook paths as needed
                     ]
 
