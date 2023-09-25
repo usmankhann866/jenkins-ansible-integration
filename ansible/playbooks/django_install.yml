@@ -14,12 +14,6 @@
         state: present
       when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'
 
-    - name: Install Python 3 (for CentOS)
-      package:
-        name: python36
-        state: present
-      when: ansible_os_family == 'RedHat'
-
     - name: Install pip (Python package manager)
       get_url:
         url: https://bootstrap.pypa.io/get-pip.py
