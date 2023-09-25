@@ -1,0 +1,49 @@
+---
+- name: Deploy Django Application
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Update apt package cache (for Ubuntu)
+      apt:
+        update_cache: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Install Python 3
+      package:
+        name: python3
+        state: present
+      when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'
+
+    - name: Install pip (Python package manager)
+      command: chmod +x /tmp/get-pip.py
+      script: |
+       {{ ansible_python.executable }} - << EOF
+        import urllib.request
+        urllib.request.urlretrieve("https://bootstrap.pypa.io/get-pip.py", "/tmp/get-pip.py")
+       EOF
+      when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'
+
+    - name: Install Django using pip
+      pip:
+        name: django
+        executable: "{{ ansible_python.executable }}"
+        state: present
+
+    - name: Create Django project directory
+      file:
+        path: /opt/django_project
+        state: directory
+
+    - name: Clone your Django project from Git
+      git:
+        repo: https://github.com/yourusername/your-django-app.git
+        dest: /opt/django_project
+      # You may need to configure git authentication if the repository is private.
+
+    - name: Install project dependencies
+      pip:
+        requirements: /opt/django_project/requirements.txt
+        executable: "{{ ansible_python.executable }}"
+
+    - name: Run Django migrations
+      command: "{{ ansible_python.executable }} /opt/django_project/manage.py migrate"

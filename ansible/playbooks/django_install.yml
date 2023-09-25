@@ -14,20 +14,38 @@
         state: present
       when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'
 
+#    - name: Install pip (Python package manager)
+#      script: |
+#        {{ ansible_python.executable }} - << EOF
+#          import urllib.request
+#          urllib.request.urlretrieve("https://bootstrap.pypa.io/get-pip.py", "/tmp/get-pip.py")
+#          EOF
+#      when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'
+
     - name: Install pip (Python package manager)
-      command: chmod +x /tmp/get-pip.py
-      script: |
-       {{ ansible_python.executable }} - << EOF
-        import urllib.request
-        urllib.request.urlretrieve("https://bootstrap.pypa.io/get-pip.py", "/tmp/get-pip.py")
-       EOF
+      get_url:
+        url: https://bootstrap.pypa.io/get-pip.py
+        dest: /tmp/get-pip.py
       when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'
 
-    - name: Install Django using pip
-      pip:
-        name: django
-        executable: "{{ ansible_python.executable }}"
+    - name: Execute get-pip.py script
+      command: "{{ ansible_python.executable }} /tmp/get-pip.py"
+      when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'
+
+
+#    - name: Install Django using pip
+#      pip:
+#        name: django
+#        executable: "{{ ansible_python.executable }}"
+#        state: present
+
+    - name: Install Django using the package manager
+      become: yes  # This is used to execute the task with elevated privileges (e.g., sudo)
+      apt:
+        name: python3-django  # For Debian/Ubuntu
         state: present
+      when: ansible_os_family == 'Debian'
+
 
     - name: Create Django project directory
       file:
@@ -36,7 +54,7 @@
 
     - name: Clone your Django project from Git
       git:
-        repo: https://github.com/yourusername/your-django-app.git
+        repo: https://BeyondErisSolutions@bitbucket.org/BeyondErisSolutions/luxury-crm-backend.git
         dest: /opt/django_project
       # You may need to configure git authentication if the repository is private.
 
