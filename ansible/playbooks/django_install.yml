@@ -15,10 +15,11 @@
       when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'
 
     - name: Install pip (Python package manager)
-      get_url:
-        url: https://bootstrap.pypa.io/get-pip.py
-        dest: /tmp/get-pip.py
-      command: "{{ ansible_python.executable }} /tmp/get-pip.py"
+      script: |
+       {{ ansible_python.executable }} - << EOF
+        import urllib.request
+        urllib.request.urlretrieve("https://bootstrap.pypa.io/get-pip.py", "/tmp/get-pip.py")
+       EOF
       when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'
 
     - name: Install Django using pip
