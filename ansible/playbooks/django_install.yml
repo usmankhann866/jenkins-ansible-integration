@@ -15,6 +15,7 @@
       when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'
 
     - name: Install pip (Python package manager)
+      command: chmod +x /tmp/get-pip.py
       script: |
        {{ ansible_python.executable }} - << EOF
         import urllib.request
