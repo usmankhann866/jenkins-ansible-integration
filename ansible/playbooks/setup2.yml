@@ -13,7 +13,7 @@
     - name: Remove Node.js repository (Debian/Ubuntu)
       apt_repository:
         repo: "deb https://deb.nodesource.com/node_14.x {{ ansible_distribution_release }} main"
-        state: absent
+        state: present
         filename: nodesource
       when: ansible_os_family == 'Debian'
 
